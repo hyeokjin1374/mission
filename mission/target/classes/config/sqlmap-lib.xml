@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LibDao">
+    <insert id="insert" parameterType="LibVO">
+      INSERT INTO LIBRARY(num, bookname, writer, publisher, bookisbn, money, contents, image)
+      VALUES (LIBRARY_SEQ.nextval, #{bookname}, #{writer}, #{publisher}, #{bookisbn}, #{money}, #{contents}, #{image})
+     </insert>
+     
+     <select id="list" resultType="LibVO">
+         SELECT * FROM LIBRARY ORDER BY num
+     </select>
+      
+     <select id="selectById" parameterType="int" resultType="LibVO">
+         SELECT * FROM LIBRARY WHERE num=#{num}
+     </select>
+     
+     <select id="selectBySearch" parameterType="HashMap" resultType="LibVO" >
+         <if test="searchType == 'bookname'" >
+               SELECT * FROM LIBRARY where bookname like '%'||#{keyword}||'%'
+         </if>
+         <if test="searchType == 'writer'" >
+             SELECT * FROM LIBRARY WHERE writer like '%'||#{keyword}||'%'
+         </if>
+         <if test="searchType == 'publisher'">
+             SELECT * FROM LIBRARY where publisher like '%'||#{keyword}||'%'
+         </if>
+       
+     </select>   
+     
+     <select id="selectByIsbn" parameterType="String" resultType="LibVO">
+             SELECT * FROM LIBRARY WHERE bookisbn = #{bookisbn}
+     </select>
+     
+</mapper>
